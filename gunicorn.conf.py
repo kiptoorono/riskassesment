@@ -28,9 +28,12 @@ loglevel = "info"
 # certfile = "/path/to/certfile"
 
 # App specific
-reload = True
+reload = False  # Set to False for production
 preload_app = True
 chdir = base_dir
+
+# WSGI application
+wsgi_app = "app:app"
 
 # Security
 limit_request_line = 4096
