@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Forecast - Climate-Based Risk Support</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #1A3C34;
+            --secondary-color: #2D6A4F;
+            --background-color: #F5F5F5;
+            --card-bg: #FFFFFF;
+            --text-color: #333333;
+            --rainfall-color: #2196F3;
+            --temperature-color: #F44336;
+            --soil-moisture-color: #4CAF50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        nav {
+            background-color: var(--primary-color);
+            padding: 1.2rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255,255,255,0.1);
+            transform: translateY(-1px);
+        }
+
+        .header {
+            padding: 8rem 2rem 4rem;
+            background: linear-gradient(rgba(26, 60, 52, 0.65), rgba(26, 60, 52, 0.65)),
+                        url('/static/images/pexels-moritz-boing-288041-846980.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem;
+            background: white;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            padding: 1.8rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .metric-card h3 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+
+        .metric-trend {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .trend-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.2rem;
+        }
+
+        .trend-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .trend-up { 
+            color: #4CAF50;
+        }
+
+        .trend-down { 
+            color: #F44336;
+        }
+
+        .trend-icon {
+            font-size: 1.2rem;
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: 400px;
+        }
+
+        .data-table {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .table-title {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: normal;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #eee;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8faf9;
+        }
+
+        tr:hover {
+            background-color: #f0f7f4;
+        }
+
+        td {
+            transition: background-color 0.2s;
+        }
+
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 1024px) {
+            .metrics, .charts {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/forecast" class="active">Forecast</a></li>
+            <li><a href="/climate_zones">Climate Zones</a></li>
+            <li><a href="/risk_assessment">Risk Assessment</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="header">
+        <h1>Climate Forecast</h1>
+        <p>Access detailed climate forecasts for your region, including rainfall, temperature, and soil moisture predictions.</p>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label for="location">Select Region:</label>
+            <select id="location" onchange="updateForecast()">
+                <option value="baringo">Baringo</option>
+                <option value="bomet">Bomet</option>
+                <option value="bungoma">Bungoma</option>
+                <option value="embu">Embu</option>
+                <option value="kakamega">Kakamega</option>
+                <option value="kericho">Kericho</option>
+                <option value="kisii">Kisii</option>
+                <option value="kitui">Kitui</option>
+                <option value="laikipia">Laikipia</option>
+                <option value="machakos">Machakos</option>
+                <option value="makueni">Makueni</option>
+                <option value="meru">Meru</option>
+                <option value="muranga">Murang'a</option>
+                <option value="nakuru">Nakuru</option>
+                <option value="nandi">Nandi</option>
+                <option value="narok">Narok</option>
+                <option value="nyandurua">Nyandarua</option>
+                <option value="nyeri">Nyeri</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label for="period">Select Period:</label>
+            <select id="period">
+                <option value="short">Short-Term (Next 3 Months)</option>
+                <option value="mid">Mid-Term (3-12 Months)</option>
+                <option value="long">Long-Term (Beyond 12 Months)</option>
+                <option value="all">All Periods</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="metrics">
+        <div class="metric-card">
+            <h3>Average Rainfall</h3>
+            <div class="metric-value" id="rainfall-value">--</div>
+            <div class="metric-trend" id="rainfall-trend">--</div>
+        </div>
+        <div class="metric-card">
+            <h3>Average Temperature</h3>
+            <div class="metric-value" id="temperature-value">--</div>
+            <div class="metric-trend" id="temperature-trend">--</div>
+        </div>
+        <div class="metric-card">
+            <h3>Average Soil Moisture</h3>
+            <div class="metric-value" id="soil-moisture-value">--</div>
+            <div class="metric-trend" id="soil-moisture-trend">--</div>
+        </div>
+    </div>
+
+    <div class="charts">
+        <div class="chart-container">
+            <canvas id="rainfallChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="temperatureChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="soilMoistureChart"></canvas>
+        </div>
+    </div>
+
+    <div class="data-table">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Rainfall (mm)</th>
+                        <th>Temperature (°C)</th>
+                        <th>Soil Moisture (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="forecast-table">
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Climate-Based Risk Support. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let rainfallChart, temperatureChart, soilMoistureChart;
+
+        function createChart(ctx, label, color) {
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: label,
+                        data: [],
+                        borderColor: color,
+                        backgroundColor: color + '20',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                },
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#eee'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                },
+                                padding: 8
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: {
+                                    size: 12
+                                },
+                                padding: 8,
+                                callback: function(value, index, values) {
+                                    const date = new Date(this.getLabelForValue(value));
+                                    return date.toLocaleDateString('en-US', {
+                                        month: 'short',
+                                        year: '2-digit'
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 10,
+                            top: 10,
+                            bottom: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        function initCharts() {
+            const rainfallCtx = document.getElementById('rainfallChart').getContext('2d');
+            const temperatureCtx = document.getElementById('temperatureChart').getContext('2d');
+            const soilMoistureCtx = document.getElementById('soilMoistureChart').getContext('2d');
+
+            rainfallChart = createChart(rainfallCtx, 'Rainfall (mm)', '#2196F3');
+            temperatureChart = createChart(temperatureCtx, 'Temperature (°C)', '#F44336');
+            soilMoistureChart = createChart(soilMoistureCtx, 'Soil Moisture (%)', '#4CAF50');
+        }
+
+        function filterDataByPeriod(data, period) {
+            const currentDate = new Date('2025-04-01'); // Set current date to April 2025
+            const dates = data.dates.map(d => new Date(d));
+            let filteredIndices = [];
+
+            // First filter out any dates from 2024
+            const validDates = dates.map((date, index) => {
+                if (date.getFullYear() < 2025) return -1;
+                return index;
+            }).filter(i => i !== -1);
+
+            switch(period) {
+                case 'short':
+                    // Short-term: April 2025 - June 2025 (next 3 months)
+                    filteredIndices = validDates.filter(index => {
+                        const date = dates[index];
+                        const monthsDiff = (date.getFullYear() - currentDate.getFullYear()) * 12 + date.getMonth() - currentDate.getMonth();
+                        return monthsDiff >= 0 && monthsDiff < 3;
+                    });
+                    break;
+                case 'mid':
+                    // Mid-term: July 2025 - March 2026 (3-12 months)
+                    filteredIndices = validDates.filter(index => {
+                        const date = dates[index];
+                        const monthsDiff = (date.getFullYear() - currentDate.getFullYear()) * 12 + date.getMonth() - currentDate.getMonth();
+                        return monthsDiff >= 3 && monthsDiff < 12;
+                    });
+                    break;
+                case 'long':
+                    // Long-term: April 2026 onwards (beyond 12 months)
+                    filteredIndices = validDates.filter(index => {
+                        const date = dates[index];
+                        const monthsDiff = (date.getFullYear() - currentDate.getFullYear()) * 12 + date.getMonth() - currentDate.getMonth();
+                        return monthsDiff >= 12;
+                    });
+                    break;
+                default:
+                    // All periods (2025 onwards only)
+                    filteredIndices = validDates;
+            }
+
+            // Update period descriptions to show actual date ranges
+            const periodDescriptions = {
+                short: 'Short-Term (Apr 2025 - Jun 2025)',
+                mid: 'Mid-Term (Jul 2025 - Mar 2026)',
+                long: 'Long-Term (Apr 2026 onwards)',
+                all: 'All Periods (2025-2029)'
+            };
+
+            // Update the period selector with actual date ranges
+            document.getElementById('period').innerHTML = Object.entries(periodDescriptions)
+                .map(([value, text]) => `<option value="${value}">${text}</option>`)
+                .join('');
+
+            return {
+                dates: filteredIndices.map(i => data.dates[i]),
+                rainfall: filteredIndices.map(i => data.rainfall[i]),
+                temperature: filteredIndices.map(i => data.temperature[i]),
+                soil_moisture: filteredIndices.map(i => data.soil_moisture[i])
+            };
+        }
+
+        let currentData = null;
+
+        function updateCharts(data, period) {
+            const filteredData = filterDataByPeriod(data, period);
+            
+            rainfallChart.data.labels = filteredData.dates;
+            rainfallChart.data.datasets[0].data = filteredData.rainfall;
+            rainfallChart.update();
+
+            temperatureChart.data.labels = filteredData.dates;
+            temperatureChart.data.datasets[0].data = filteredData.temperature;
+            temperatureChart.update();
+
+            soilMoistureChart.data.labels = filteredData.dates;
+            soilMoistureChart.data.datasets[0].data = filteredData.soil_moisture;
+            soilMoistureChart.update();
+        }
+
+        const historicalAverages = {
+            baringo: { rain: 76.69, temp: 20.87, soil: 18.67 },
+            bomet: { rain: 131.18, temp: 18.40, soil: 25.14 },
+            bungoma: { rain: 121.84, temp: 18.71, soil: 35.33 },
+            embu: { rain: 70.71, temp: 22.14, soil: 18.26 },
+            kakamega: { rain: 153.03, temp: 20.81, soil: 74.77 },
+            kericho: { rain: 128.32, temp: 18.37, soil: 31.78 },
+            kisii: { rain: 153.79, temp: 21.09, soil: 50.01 },
+            kitui: { rain: 51.79, temp: 25.06, soil: 24.07 },
+            laikipia: { rain: 64.67, temp: 19.80, soil: 15.14 },
+            machakos: { rain: 57.70, temp: 20.42, soil: 16.90 },
+            makueni: { rain: 52.01, temp: 22.42, soil: 19.34 },
+            meru: { rain: 72.21, temp: 22.18, soil: 11.64 },
+            muranga: { rain: 72.32, temp: 18.26, soil: 2.83 },
+            nakuru: { rain: 86.97, temp: 15.91, soil: 24.40 },
+            nandi: { rain: 125.42, temp: 18.76, soil: 51.70 },
+            narok: { rain: 83.50, temp: 18.83, soil: 22.26 },
+            nyandurua: { rain: 89.68, temp: 16.84, soil: 20.52 }, // Listed as Nyandarua in historical data
+            nyeri: { rain: 79.39, temp: 17.44, soil: 6.89 }
+        };
+
+        function updateMetrics(data, period) {
+            const filteredData = filterDataByPeriod(data, period);
+            const location = document.getElementById('location').value;
+            const historicalAvg = historicalAverages[location];
+            
+            const avgRainfall = filteredData.rainfall.reduce((a, b) => a + b, 0) / filteredData.rainfall.length;
+            const avgTemperature = filteredData.temperature.reduce((a, b) => a + b, 0) / filteredData.temperature.length;
+            const avgSoilMoisture = filteredData.soil_moisture.reduce((a, b) => a + b, 0) / filteredData.soil_moisture.length;
+
+            document.getElementById('rainfall-value').textContent = `${avgRainfall.toFixed(1)} mm`;
+            document.getElementById('temperature-value').textContent = `${avgTemperature.toFixed(1)}°C`;
+            document.getElementById('soil-moisture-value').textContent = `${avgSoilMoisture.toFixed(1)}%`;
+
+            // Calculate percentage differences from historical averages
+            const rainDiff = ((avgRainfall - historicalAvg.rain) / historicalAvg.rain * 100).toFixed(1);
+            const tempDiff = ((avgTemperature - historicalAvg.temp) / historicalAvg.temp * 100).toFixed(1);
+            const moistDiff = ((avgSoilMoisture - historicalAvg.soil) / historicalAvg.soil * 100).toFixed(1);
+
+            // Update trend displays with historical comparison
+            document.getElementById('rainfall-trend').innerHTML = `
+                <span class="trend-label">vs. Historical Avg (${historicalAvg.rain.toFixed(1)} mm)</span>
+                <span class="trend-value ${rainDiff > 0 ? 'trend-up' : 'trend-down'}">
+                    ${Math.abs(rainDiff)}%
+                    <span class="trend-icon">${rainDiff > 0 ? '↑' : '↓'}</span>
+                </span>
+            `;
+            document.getElementById('temperature-trend').innerHTML = `
+                <span class="trend-label">vs. Historical Avg (${historicalAvg.temp.toFixed(1)}°C)</span>
+                <span class="trend-value ${tempDiff > 0 ? 'trend-up' : 'trend-down'}">
+                    ${Math.abs(tempDiff)}%
+                    <span class="trend-icon">${tempDiff > 0 ? '↑' : '↓'}</span>
+                </span>
+            `;
+            document.getElementById('soil-moisture-trend').innerHTML = `
+                <span class="trend-label">vs. Historical Avg (${historicalAvg.soil.toFixed(1)}%)</span>
+                <span class="trend-value ${moistDiff > 0 ? 'trend-up' : 'trend-down'}">
+                    ${Math.abs(moistDiff)}%
+                    <span class="trend-icon">${moistDiff > 0 ? '↑' : '↓'}</span>
+                </span>
+            `;
+        }
+
+        function updateTable(data, period) {
+            const filteredData = filterDataByPeriod(data, period);
+            const tbody = document.getElementById('forecast-table');
+            const location = document.getElementById('location').value;
+            const periodText = {
+                'short': 'Short-Term',
+                'mid': 'Mid-Term',
+                'long': 'Long-Term',
+                'all': 'All Periods'
+            }[period];
+
+            // Update table title
+            const tableTitle = document.querySelector('.table-title');
+            if (!tableTitle) {
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'table-title';
+                document.querySelector('.data-table').insertBefore(titleDiv, document.querySelector('.table-container'));
+            }
+            
+            document.querySelector('.table-title').innerHTML = `
+                Forecast Data for ${location.charAt(0).toUpperCase() + location.slice(1)}
+                <span class="table-subtitle">${periodText} • ${filteredData.dates.length} entries</span>
+            `;
+
+            tbody.innerHTML = '';
+
+            filteredData.dates.forEach((date, i) => {
+                const row = document.createElement('tr');
+                const formattedDate = new Date(date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                row.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td>${filteredData.rainfall[i].toFixed(2)} mm</td>
+                    <td>${filteredData.temperature[i].toFixed(2)}°C</td>
+                    <td>${filteredData.soil_moisture[i].toFixed(2)}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        async function updateForecast() {
+            const location = document.getElementById('location').value;
+            const period = document.getElementById('period').value;
+            
+            try {
+                const response = await fetch(`/api/forecast/${location}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentData = result.data;
+                    updateCharts(currentData, period);
+                    updateMetrics(currentData, period);
+                    updateTable(currentData, period);
+                } else {
+                    console.error('Error fetching forecast:', result.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Update the period options in the select element
+        document.getElementById('period').innerHTML = `
+            <option value="short">Short-Term (Next 3 Months)</option>
+            <option value="mid">Mid-Term (3-12 Months)</option>
+            <option value="long">Long-Term (Beyond 12 Months)</option>
+            <option value="all">All Periods</option>
+        `;
+
+        // Add event listener for period changes
+        document.getElementById('period').addEventListener('change', () => {
+            if (currentData) {
+                const period = document.getElementById('period').value;
+                updateCharts(currentData, period);
+                updateMetrics(currentData, period);
+                updateTable(currentData, period);
+            }
+        });
+
+        // Initialize charts and load initial data
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            updateForecast();
+        });
+    </script>
+</body>
+</html> 
