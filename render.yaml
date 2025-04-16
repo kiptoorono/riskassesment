@@ -1,0 +1,4 @@
+services:
+  - type: web
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
