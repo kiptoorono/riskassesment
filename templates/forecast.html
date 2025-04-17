@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Climate Forecast - Climate-Based Risk Support</title>
+{% extends "base.html" %}
+
+{% block title %}Climate Forecast - Climate-Based Risk Support{% endblock %}
+
+{% block extra_css %}
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -299,18 +298,9 @@
             }
         }
     </style>
-</head>
-<body>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/forecast" class="active">Forecast</a></li>
-            <li><a href="/climate_zones">Climate Zones</a></li>
-            <li><a href="/risk_assessment">Risk Assessment</a></li>
-            <li><a href="/about">About</a></li>
-        </ul>
-    </nav>
+{% endblock %}
 
+{% block content %}
     <div class="header">
         <h1>Climate Forecast</h1>
         <p>Access detailed climate forecasts for your region, including rainfall, temperature, and soil moisture predictions.</p>
@@ -402,7 +392,9 @@
     <footer>
         <p>&copy; 2024 Climate-Based Risk Support. All rights reserved.</p>
     </footer>
+{% endblock %}
 
+{% block extra_js %}
     <script>
         let rainfallChart, temperatureChart, soilMoistureChart;
 
@@ -737,5 +729,4 @@
             updateForecast();
         });
     </script>
-</body>
-</html> 
+{% endblock %} 

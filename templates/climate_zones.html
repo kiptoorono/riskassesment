@@ -1,87 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Climate Zones - Climate-Based Risk Support</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% extends "base.html" %}
+
+{% block title %}Climate Zones - Climate-Based Risk Support{% endblock %}
+
+{% block extra_css %}
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-
-        :root {
-            --primary-color: #1B4332;
-            --secondary-color: #2D6A4F;
-            --text-color: #333;
-            --background-color: #fff;
-            --light-bg: #f8f9fa;
-            --accent-color: #40916C;
-        }
-
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        nav {
-            background-color: var(--primary-color);
-            padding: 0.8rem 1rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 500;
-            transition: all 0.3s;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            background-color: rgba(255,255,255,0.15);
-        }
-
         .page-header {
             padding: 4.5rem 2rem 2rem;
             background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(27, 67, 50, 0.85));
@@ -117,46 +39,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            margin-top: auto;
-        }
-
         @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                flex-direction: column;
-                gap: 0;
-                background-color: var(--primary-color);
-                padding: 1rem 0;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .nav-links li {
-                width: 100%;
-            }
-
-            .nav-links a {
-                display: block;
-                padding: 1rem 2rem;
-                border-radius: 0;
-            }
-
             .page-header {
                 padding: 4rem 1rem 1.5rem;
             }
@@ -180,23 +63,9 @@
             }
         }
     </style>
-</head>
-<body>
-    <nav>
-        <div class="nav-container">
-            <button class="menu-toggle" aria-label="Toggle navigation">
-                <span class="material-icons">menu</span>
-            </button>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/forecast">Forecast</a></li>
-                <li><a href="/climate_zones" class="active">Climate Zones</a></li>
-                <li><a href="/risk_assessment">Risk Assessment</a></li>
-                <li><a href="/about">About</a></li>
-            </ul>
-        </div>
-    </nav>
+{% endblock %}
 
+{% block content %}
     <header class="page-header">
         <h1>Kenya Climate Zones Map</h1>
         <p>Interactive visualization of climate zones across Kenya, classified using machine learning for precise agricultural planning.</p>
@@ -205,34 +74,4 @@
     <main class="map-container">
         <iframe class="map-frame" src="/static/climate_zones_map.html" title="Kenya Climate Zones Map"></iframe>
     </main>
-
-    <footer>
-        <p>&copy; 2024 Climate-Based Risk Support. All rights reserved.</p>
-    </footer>
-
-    <script>
-        // Add this JavaScript at the end of your body tag
-        document.querySelector('.menu-toggle').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const nav = document.querySelector('nav');
-            const navLinks = document.querySelector('.nav-links');
-            const menuToggle = document.querySelector('.menu-toggle');
-            
-            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-            }
-        });
-
-        // Close menu when clicking a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.querySelector('.nav-links').classList.remove('active');
-            });
-        });
-    </script>
-</body>
-</html> 
+{% endblock %} 

@@ -1,67 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Climate-Based Risk Support</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% extends "base.html" %}
+
+{% block title %}About - Climate-Based Risk Support{% endblock %}
+
+{% block extra_css %}
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-
-        :root {
-            --primary-color: #1B4332;
-            --secondary-color: #2D6A4F;
-            --text-color: #333;
-            --background-color: #f8f9fa;
-            --light-bg: #fff;
-            --accent-color: #40916C;
-        }
-
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        nav {
-            background-color: var(--primary-color);
-            padding: 1.2rem 2rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 500;
-            transition: all 0.3s;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            background-color: rgba(255,255,255,0.1);
-            transform: translateY(-1px);
-        }
-
         .hero-section {
             padding: 8rem 2rem 4rem;
             background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(27, 67, 50, 0.85)), url('images/maizefarm.jpg');
@@ -176,14 +118,6 @@
             font-size: 0.9rem;
         }
 
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
         @media (max-width: 768px) {
             .hero-section h1 {
                 font-size: 2.5rem;
@@ -198,18 +132,9 @@
             }
         }
     </style>
-</head>
-<body>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/forecast">Forecast</a></li>
-            <li><a href="/climate_zones">Climate Zones</a></li>
-            <li><a href="/risk_assessment">Risk Assessment</a></li>
-            <li><a href="/about" class="active">About</a></li>
-        </ul>
-    </nav>
+{% endblock %}
 
+{% block content %}
     <section class="hero-section">
         <h1>Empowering Agricultural Decisions</h1>
         <p>Providing data-driven insights for sustainable farming practices in Kenya</p>
@@ -279,9 +204,4 @@
             </div>
         </section>
     </div>
-
-    <footer>
-        <p>&copy; 2024 Climate Risk Assessment. All rights reserved.</p>
-    </footer>
-</body>
-</html> 
+{% endblock %} 
