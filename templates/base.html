@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Climate-Based Risk Support{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,8 +18,8 @@
             --primary-color: #1B4332;
             --secondary-color: #2D6A4F;
             --text-color: #333;
-            --background-color: #fff;
-            --light-bg: #f8f9fa;
+            --background-color: #f8f9fa;
+            --light-bg: #fff;
             --accent-color: #40916C;
         }
 
@@ -46,26 +46,8 @@
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-
-        .menu-toggle:hover {
-            background-color: rgba(255,255,255,0.1);
         }
 
         .nav-links {
@@ -90,6 +72,24 @@
 
         .nav-links a:hover, .nav-links a.active {
             background-color: rgba(255,255,255,0.15);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .menu-toggle:hover {
+            background-color: rgba(255,255,255,0.1);
         }
 
         main {

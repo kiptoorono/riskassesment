@@ -1,8 +1,12 @@
-{% extends "base.html" %}
-
-{% block title %}Risk Assessment - Climate-Based Risk Support{% endblock %}
-
-{% block extra_css %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Assessment - Climate-Based Risk Support</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             margin: 0;
@@ -100,16 +104,23 @@
             flex-wrap: wrap;
         }
 
+        .location-selector > div {
+            flex: 1;
+            min-width: 200px;
+        }
+
         .location-selector select {
-            padding: 8px 12px;
+            padding: 12px;
             border-radius: 4px;
             border: 1px solid #ddd;
-            min-width: 200px;
+            width: 100%;
             font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
         }
 
         .location-selector button {
-            padding: 8px 16px;
+            padding: 12px 24px;
             background: var(--primary-color);
             color: white;
             border: none;
@@ -117,6 +128,8 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s;
+            width: 100%;
+            font-size: 1rem;
         }
 
         .location-selector button:hover {
@@ -246,142 +259,100 @@
 
         .recommendations-list {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        @media (max-width: 768px) {
-            .recommendations-list {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .recommendation-item {
-            background: #f5f5f5;
-            padding: 15px 20px;
-            border-radius: 8px;
-            border-left: 4px solid #2E7D32;
-            margin-bottom: 10px;
-            transition: transform 0.2s;
-        }
-
-        .recommendation-item.urgent {
-            border-left-color: #C62828;
-            background: #FFF5F5;
-        }
-
-        .recommendation-item:hover {
-            transform: translateX(5px);
-        }
-
-        .crop-advisories-list {
-            display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
 
-        .crop-advisory-item {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 4px;
-        }
-
-        .crop-advisory-item h4 {
-            margin: 0 0 10px 0;
-            color: #2E7D32;
-        }
-
-        .crop-advisory-item ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        .crop-advisory-item li {
-            margin: 5px 0;
-        }
-
-        .charts-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .chart-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chart-card h3 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-        }
-
-        .chart-container {
-            flex: 1;
-            position: relative;
-            min-height: 0;
-        }
-
-        .no-data-message {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-            font-style: italic;
-            background: #f5f5f5;
-            border-radius: 8px;
-            margin: 10px 0;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .error-message {
-            background-color: #FFEBEE;
-            color: #C62828;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.5rem;
+            .header {
+                padding: 6rem 1rem 3rem;
             }
-            
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
             .container {
                 padding: 1rem;
+            }
+
+            .location-selector {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .location-selector > div {
+                width: 100%;
+            }
+
+            .location-selector select,
+            .location-selector button {
+                width: 100%;
+            }
+
+            .risk-cards {
+                grid-template-columns: 1fr;
             }
 
             .charts-container {
                 grid-template-columns: 1fr;
             }
 
-            .location-selector select {
+            .chart-card {
+                min-height: 300px;
+            }
+
+            .season-tabs {
+                flex-direction: column;
+            }
+
+            .season-tab {
                 width: 100%;
+            }
+
+            .recommendations-list {
+                grid-template-columns: 1fr;
+            }
+
+            .risk-matrix {
+                margin: 0 -10px;
+                padding: 0 10px;
+            }
+
+            .risk-matrix-table {
+                font-size: 0.9rem;
+            }
+
+            .risk-cell {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 5rem 1rem 2rem;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .risk-card {
+                padding: 15px;
+            }
+
+            .chart-card {
+                padding: 15px;
+            }
+
+            .risk-level {
+                font-size: 20px;
+                padding: 8px 12px;
             }
         }
 
@@ -586,10 +557,59 @@
             margin: 5px 0;
             font-size: 0.9rem;
         }
-    </style>
-{% endblock %}
 
-{% block content %}
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .chart-card h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            height: 400px;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-card {
+                min-height: auto;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/forecast">Forecast</a></li>
+            <li><a href="/climate_zones">Climate Zones</a></li>
+            <li><a href="/risk_assessment" class="active">Risk Assessment</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
     <header class="header">
         <h1>Climate Risk Assessment</h1>
         <p>Get detailed risk analysis and recommendations for your region based on AI-driven insights and historical data.</p>
@@ -803,8 +823,881 @@
             </div>
         </div>
     </div>
-{% endblock %}
 
-{% block extra_js %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% endblock %} 
+    <footer>
+        <p>&copy; 2024 Climate-Based Risk Support. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let riskChart = null;
+        let trendChart = null;
+
+        // Add locations array
+        const locations = [
+            'Baringo',
+            'Bomet',
+            'Bungoma',
+            'Embu',
+            'Kakamega',
+            'Kericho',
+            'Kisii',
+            'Kitui',
+            'Laikipia',
+            'Machakos',
+            'Makueni',
+            'Meru',
+            'Muranga',
+            'Nakuru',
+            'Nandi',
+            'Narok',
+            'Nyandarua',
+            'Nyeri'
+        ];
+
+        // Add initialization function
+        function initializeLocationSelector() {
+            const locationSelect = document.getElementById('location');
+            locations.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location.toLowerCase();
+                option.textContent = location;
+                locationSelect.appendChild(option);
+            });
+        }
+
+        // Call initialization when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeLocationSelector();
+        });
+
+        function updateRiskAssessment() {
+            const location = document.getElementById('location').value;
+            const period = document.getElementById('period').value;
+            
+            if (!location) {
+                showError('Please select a location');
+                return;
+            }
+
+            showLoading();
+            hideError();
+            document.getElementById('riskAssessment').style.display = 'none';
+
+            fetch(`/api/risk_assessment/${location}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    hideLoading();
+                    if (data.error) {
+                        showError(data.error);
+                        return;
+                    }
+                    displayRiskAssessment(data, period);
+                })
+                .catch(error => {
+                    hideLoading();
+                    showError('Failed to fetch risk assessment data: ' + error.message);
+                    console.error('Error:', error);
+                });
+        }
+
+        function displayRiskAssessment(data, period) {
+            console.log('Received data:', data);
+            
+            if (!data || !data.risk_assessment) {
+                showError('Invalid risk assessment data received');
+                return;
+            }
+
+            const { risk_assessment } = data;
+            const { traditional } = risk_assessment;
+
+            if (!traditional || !traditional[period]) {
+                showError('Missing risk assessment data for selected period');
+                return;
+            }
+
+            const periodData = traditional[period];
+            const timeSeriesData = periodData.time_series || {};
+
+            try {
+                // Helper function to safely format numbers and provide explanations
+                const safeFormat = (value, type) => {
+                    if (value === null || value === undefined) {
+                        switch(type) {
+                            case 'soil':
+                                return 'Not available due to lack of recent soil moisture measurements';
+                            case 'temp':
+                                return 'Not available due to missing temperature data';
+                            default:
+                                return 'Not available due to insufficient data';
+                        }
+                    }
+                    const num = parseFloat(value);
+                    return isNaN(num) ? 'Invalid measurement' : num.toFixed(2);
+                };
+
+                // Update risk levels
+                updateRiskLevel('droughtRisk', periodData.drought_risk_level || 'Unknown');
+                updateRiskLevel('heatRisk', periodData.heat_risk_level || 'Unknown');
+                updateRiskLevel('floodRisk', periodData.flood_risk_level || 'Unknown');
+
+                // Update descriptions with enhanced information
+                document.getElementById('droughtDescription').textContent = 
+                    `Drought Index: ${safeFormat(periodData.drought_index)}, ` +
+                    `Rainfall Deviation: ${safeFormat(periodData.rain_zscore)} σ`;
+                
+                document.getElementById('droughtExplanation').innerHTML = 
+                    `Note: ${getDroughtNote(periodData.drought_index, data.location)}`;
+                
+                document.getElementById('heatDescription').textContent = 
+                    `Heat Stress: ${safeFormat(periodData.heat_stress)}, ` +
+                    `Temperature Deviation: ${safeFormat(periodData.temp_zscore)} σ`;
+                
+                document.getElementById('heatExplanation').innerHTML = 
+                    `Note: ${getHeatNote(periodData.heat_stress, data.location)}`;
+                
+                document.getElementById('floodDescription').textContent = 
+                    `Flood Index: ${safeFormat(periodData.flood_index)}, ` +
+                    `Soil Saturation: ${safeFormat(periodData.soil_moisture && periodData.soil_mean ? 
+                        (periodData.soil_moisture / periodData.soil_mean * 100) : null, 'soil')}%`;
+                
+                document.getElementById('floodExplanation').innerHTML = 
+                    `Note: ${getFloodNote(periodData.flood_index, data.location)}`;
+
+                // Update Risk Matrix
+                updateRiskMatrix(periodData);
+
+                // Update trend chart
+                if (traditional && typeof traditional === 'object') {
+                    console.log('Traditional assessment data:', traditional);
+                    updateTrendChart(traditional);
+                } else {
+                    console.warn('No traditional assessment data available');
+                    const ctx = document.getElementById('trendChart').getContext('2d');
+                    displayNoDataMessage(ctx, 'No trend data available');
+                }
+
+                // Always generate recommendations based on the risk data
+                console.log('Generating recommendations based on risk data');
+                const recommendations = {
+                    longRains: [
+                        {
+                            title: 'Land Preparation',
+                            timing: 'Before March',
+                            actions: [
+                                'Clear and prepare fields',
+                                'Test soil conditions',
+                                'Plan field layout based on slope and drainage'
+                            ],
+                            climateIndicator: 'Prepare for long rains season'
+                        },
+                        {
+                            title: 'Planting Guidelines',
+                            timing: 'March-April',
+                            actions: [
+                                'Plant when soil moisture is adequate',
+                                'Follow recommended spacing guidelines',
+                                'Apply basal fertilizer as needed',
+                                'Monitor soil moisture levels'
+                            ],
+                            climateIndicator: 'Main growing season'
+                        }
+                    ],
+                    shortRains: [
+                        {
+                            title: 'Land Preparation',
+                            timing: 'Before October',
+                            actions: [
+                                'Clear fields of previous crop residue',
+                                'Prepare soil conservation structures',
+                                'Check drainage systems'
+                            ],
+                            climateIndicator: 'Prepare for short rains season'
+                        },
+                        {
+                            title: 'Planting Guidelines',
+                            timing: 'October-November',
+                            actions: [
+                                'Time planting with onset of rains',
+                                'Ensure proper seed placement',
+                                'Monitor early crop establishment',
+                                'Practice appropriate spacing'
+                            ],
+                            climateIndicator: 'Secondary growing season'
+                        }
+                    ],
+                    drySeasons: [
+                        {
+                            title: 'Field Management',
+                            timing: 'During dry periods',
+                            actions: [
+                                'Maintain soil moisture conservation measures',
+                                'Monitor and repair water harvesting structures',
+                                'Practice mulching where appropriate',
+                                'Control weeds to reduce water competition'
+                            ],
+                            climateIndicator: 'Focus on conservation'
+                        }
+                    ]
+                };
+
+                // Find peak risk months
+                const droughtPeak = findPeakRiskMonth(timeSeriesData, 'drought_risk');
+                const heatPeak = findPeakRiskMonth(timeSeriesData, 'heat_risk');
+                const floodPeak = findPeakRiskMonth(timeSeriesData, 'flood_risk');
+
+                // Add risk-based warning recommendations with peak month information
+                if (periodData.drought_risk_level === 'Severe' || periodData.drought_risk_level === 'Moderate') {
+                    const droughtWarning = {
+                        title: 'Drought Risk Warning',
+                        timing: droughtPeak ? `Peak Risk Expected: ${droughtPeak.month}` : 'Immediate Action Required',
+                        actions: [
+                            'Implement water conservation techniques',
+                            'Consider drought-resistant crop varieties',
+                            'Install or repair water harvesting systems',
+                            'Monitor soil moisture levels daily',
+                            ...(droughtPeak ? [
+                                `Prepare additional water resources before ${droughtPeak.month}`,
+                                `Plan for supplementary irrigation during ${droughtPeak.month}`
+                            ] : [])
+                        ],
+                        alert: true,
+                        climateIndicator: `Current drought risk: ${periodData.drought_risk_level} (Index: ${periodData.drought_index?.toFixed(2)})${
+                            droughtPeak ? `\nPeak risk: ${droughtPeak.risk.toFixed(1)}% expected in ${droughtPeak.month}` : ''
+                        }`
+                    };
+                    recommendations.longRains.push(droughtWarning);
+                    recommendations.shortRains.push(droughtWarning);
+                    recommendations.drySeasons.push(droughtWarning);
+                }
+
+                if (periodData.heat_risk_level === 'Severe' || periodData.heat_risk_level === 'Moderate') {
+                    const heatWarning = {
+                        title: 'Heat Stress Warning',
+                        timing: heatPeak ? `Peak Risk Expected: ${heatPeak.month}` : 'Immediate Action Required',
+                        actions: [
+                            'Increase irrigation frequency',
+                            'Apply mulch to reduce soil temperature',
+                            'Consider shade structures for sensitive crops',
+                            'Monitor for signs of heat stress',
+                            ...(heatPeak ? [
+                                `Plan for additional cooling measures in ${heatPeak.month}`,
+                                `Consider adjusting planting dates to avoid peak heat in ${heatPeak.month}`
+                            ] : [])
+                        ],
+                        alert: true,
+                        climateIndicator: `Current heat risk: ${periodData.heat_risk_level} (Stress Index: ${periodData.heat_stress?.toFixed(2)})${
+                            heatPeak ? `\nPeak risk: ${heatPeak.risk.toFixed(1)}% expected in ${heatPeak.month}` : ''
+                        }`
+                    };
+                    recommendations.longRains.push(heatWarning);
+                    recommendations.shortRains.push(heatWarning);
+                    recommendations.drySeasons.push(heatWarning);
+                }
+
+                if (periodData.flood_risk_level === 'Severe' || periodData.flood_risk_level === 'Moderate') {
+                    const floodWarning = {
+                        title: 'Flood Risk Warning',
+                        timing: floodPeak ? `Peak Risk Expected: ${floodPeak.month}` : 'Immediate Action Required',
+                        actions: [
+                            'Clear and maintain drainage channels',
+                            'Prepare elevated planting beds',
+                            'Monitor water levels in low-lying areas',
+                            'Have emergency drainage equipment ready',
+                            ...(floodPeak ? [
+                                `Strengthen flood defenses before ${floodPeak.month}`,
+                                `Plan for emergency drainage during ${floodPeak.month}`
+                            ] : [])
+                        ],
+                        alert: true,
+                        climateIndicator: `Current flood risk: ${periodData.flood_risk_level} (Index: ${periodData.flood_index?.toFixed(2)})${
+                            floodPeak ? `\nPeak risk: ${floodPeak.risk.toFixed(1)}% expected in ${floodPeak.month}` : ''
+                        }`
+                    };
+                    recommendations.longRains.push(floodWarning);
+                    recommendations.shortRains.push(floodWarning);
+                }
+
+                // Add combined risk warnings if multiple risks are present
+                const highRiskCount = [
+                    periodData.drought_risk_level,
+                    periodData.heat_risk_level,
+                    periodData.flood_risk_level
+                ].filter(risk => risk === 'Severe' || risk === 'Moderate').length;
+
+                if (highRiskCount >= 2) {
+                    // Find the earliest peak risk month
+                    const peakMonths = [
+                        droughtPeak && { ...droughtPeak, type: 'drought' },
+                        heatPeak && { ...heatPeak, type: 'heat' },
+                        floodPeak && { ...floodPeak, type: 'flood' }
+                    ].filter(Boolean);
+                    
+                    peakMonths.sort((a, b) => a.date - b.date);
+                    
+                    const combinedWarning = {
+                        title: 'Multiple Climate Risks Warning',
+                        timing: peakMonths.length > 0 ? 
+                            `Multiple Risk Peaks: ${peakMonths.map(p => `${p.type} in ${p.month}`).join(', ')}` : 
+                            'Critical Action Required',
+                        actions: [
+                            'Implement integrated risk management strategies',
+                            'Consider alternative crop varieties or planting dates',
+                            'Increase monitoring frequency of all parameters',
+                            'Prepare emergency response measures',
+                            ...(peakMonths.length > 0 ? [
+                                `Prepare comprehensive risk mitigation before ${peakMonths[0].month}`,
+                                `Consider crop scheduling to avoid peak risk periods`
+                            ] : [])
+                        ],
+                        alert: true,
+                        climateIndicator: `Multiple climate risks detected: ${highRiskCount} significant risks present${
+                            peakMonths.length > 0 ? `\nRisk peaks: ${peakMonths.map(p => 
+                                `${p.type} (${p.risk.toFixed(1)}%) in ${p.month}`).join(', ')}` : ''
+                        }`
+                    };
+                    recommendations.longRains.push(combinedWarning);
+                    recommendations.shortRains.push(combinedWarning);
+                    recommendations.drySeasons.push(combinedWarning);
+                }
+
+                // Add seasonal risk adjustments
+                const currentMonth = new Date().getMonth();
+                const isLongRainsSeason = currentMonth >= 2 && currentMonth <= 4;
+                const isShortRainsSeason = currentMonth >= 9 && currentMonth <= 11;
+
+                if (isLongRainsSeason && periodData.rain_zscore < -1) {
+                    recommendations.longRains.push({
+                        title: 'Below Normal Rainfall Warning',
+                        timing: 'Long Rains Season',
+                        actions: [
+                            'Consider drought-tolerant crop varieties',
+                            'Implement water conservation practices',
+                            'Adjust planting density',
+                            'Plan for supplementary irrigation'
+                        ],
+                        alert: true,
+                        climateIndicator: `Rainfall deviation: ${periodData.rain_zscore?.toFixed(2)} σ below normal`
+                    });
+                }
+
+                if (isShortRainsSeason && periodData.soil_moisture > periodData.soil_mean * 1.5) {
+                    recommendations.shortRains.push({
+                        title: 'High Soil Moisture Warning',
+                        timing: 'Short Rains Season',
+                        actions: [
+                            'Monitor root zone for waterlogging',
+                            'Ensure proper drainage',
+                            'Consider raised bed planting',
+                            'Adjust irrigation schedules'
+                        ],
+                        alert: true,
+                        climateIndicator: `Soil moisture ${((periodData.soil_moisture / periodData.soil_mean * 100) - 100).toFixed(0)}% above normal`
+                    });
+                }
+
+                displayRecommendations(recommendations);
+                document.getElementById('riskAssessment').style.display = 'block';
+            } catch (error) {
+                console.error('Error displaying risk assessment:', error);
+                showError('Error displaying risk assessment data: ' + error.message);
+            }
+        }
+
+        function displayNoDataMessage(ctx, message) {
+            const canvas = document.getElementById('trendChart');
+            canvas.style.display = 'none';
+            const container = canvas.parentElement;
+            let messageEl = container.querySelector('.no-data-message');
+            if (!messageEl) {
+                messageEl = document.createElement('div');
+                messageEl.className = 'no-data-message';
+                container.appendChild(messageEl);
+            }
+            messageEl.textContent = message;
+        }
+
+        function updateTrendChart(data) {
+            const canvas = document.getElementById('trendChart');
+            const ctx = canvas.getContext('2d');
+            const period = document.getElementById('period').value;
+            
+            // Clear any existing chart
+            if (trendChart) {
+                trendChart.destroy();
+            }
+
+            // Get time series data for the selected period
+            if (!data || !data[period] || !data[period].time_series) {
+                displayNoDataMessage(ctx, 'No trend data available for this period');
+                return;
+            }
+
+            const timeSeriesData = data[period].time_series;
+
+            // Remove no data message if it exists
+            const container = canvas.parentElement;
+            const message = container.querySelector('.no-data-message');
+            if (message) {
+                message.remove();
+            }
+            canvas.style.display = 'block';
+
+            // Format dates - Ensure we're starting from April 2025
+            const dates = timeSeriesData.dates.map(date => {
+                let d = new Date(date);
+                // If date is before April 2025, adjust it to 2025
+                if (d < new Date('2025-04-01')) {
+                    d.setFullYear(2025);
+                }
+                return d.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            });
+
+            // Prepare data arrays, ensuring values are between 0 and 100
+            const droughtRisk = timeSeriesData.drought_risk.map(v => Math.min(Math.max(v * 100, 0), 100));
+            const heatRisk = timeSeriesData.heat_risk.map(v => Math.min(Math.max(v * 100, 0), 100));
+            const floodRisk = timeSeriesData.flood_risk.map(v => Math.min(Math.max(v * 100, 0), 100));
+
+            // Create the chart
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: 'Drought Risk',
+                            data: droughtRisk,
+                            borderColor: 'rgba(255, 99, 132, 0.8)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Heat Risk',
+                            data: heatRisk,
+                            borderColor: 'rgba(255, 159, 64, 0.8)',
+                            backgroundColor: 'rgba(255, 159, 64, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Flood Risk',
+                            data: floodRisk,
+                            borderColor: 'rgba(54, 162, 235, 0.8)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Risk Trends Over Time',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.parsed.y.toFixed(1)}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            },
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Risk Level (%)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateRiskLevel(elementId, riskLevel) {
+            const element = document.getElementById(elementId);
+            if (!element || !riskLevel) {
+                console.warn(`Unable to update risk level for ${elementId}`);
+                return;
+            }
+            
+            element.textContent = riskLevel;
+            element.className = `risk-level ${riskLevel.toLowerCase()}`;
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('error').style.display = 'none';
+        }
+
+        function updateRiskMatrix(periodData) {
+            // Clear previous highlights
+            document.querySelectorAll('.risk-cell').forEach(cell => {
+                cell.style.opacity = '0.3';
+            });
+
+            // Determine risk positions based on data
+            const risks = [
+                {
+                    name: 'drought',
+                    likelihood: getLikelihood(periodData.drought_index),
+                    impact: getImpactSeverity(periodData.drought_index)
+                },
+                {
+                    name: 'heat',
+                    likelihood: getLikelihood(periodData.heat_stress),
+                    impact: getImpactSeverity(periodData.temp_zscore)
+                },
+                {
+                    name: 'flood',
+                    likelihood: getLikelihood(periodData.flood_index),
+                    impact: getImpactSeverity(periodData.soil_moisture)
+                }
+            ];
+
+            // Highlight cells based on risks
+            risks.forEach(risk => {
+                const cellId = `cell-${getLikelihoodCode(risk.likelihood)}-${getImpactCode(risk.impact)}`;
+                const cell = document.getElementById(cellId);
+                if (cell) {
+                    cell.style.opacity = '1';
+                    // Add tooltip with risk name
+                    cell.title = `${risk.name.charAt(0).toUpperCase() + risk.name.slice(1)} Risk`;
+                }
+            });
+        }
+
+        function getLikelihood(value) {
+            if (value === null || value === undefined) return 'Possible';
+            if (value > 0.8) return 'Almost Certain';
+            if (value > 0.6) return 'Likely';
+            if (value > 0.4) return 'Possible';
+            if (value > 0.2) return 'Unlikely';
+            return 'Rare';
+        }
+
+        function getImpactSeverity(value) {
+            if (value === null || value === undefined) return 'Moderate';
+            if (value > 0.8) return 'Severe';
+            if (value > 0.6) return 'Major';
+            if (value > 0.4) return 'Moderate';
+            if (value > 0.2) return 'Minor';
+            return 'Negligible';
+        }
+
+        function getLikelihoodCode(likelihood) {
+            const codes = {
+                'Almost Certain': 'ac',
+                'Likely': 'l',
+                'Possible': 'p',
+                'Unlikely': 'u',
+                'Rare': 'r'
+            };
+            return codes[likelihood] || 'p';
+        }
+
+        function getImpactCode(impact) {
+            const codes = {
+                'Negligible': 'n',
+                'Minor': 'mi',
+                'Moderate': 'mo',
+                'Major': 'ma',
+                'Severe': 's'
+            };
+            return codes[impact] || 'mo';
+        }
+
+        function getDroughtNote(index, location) {
+            const notes = {
+                'meru': {
+                    low: 'Minimal impact on crops. Monitor soil moisture.',
+                    mild: 'May affect tea and coffee yields. Consider irrigation planning.',
+                    moderate: 'Risk to maize and legumes. Implement water conservation.',
+                    severe: 'High risk to all crops. Activate drought response plan.'
+                },
+                'default': {
+                    low: 'Minimal drought risk. Regular monitoring advised.',
+                    mild: 'May reduce crop yields. Prepare irrigation systems.',
+                    moderate: 'Significant risk to rain-fed crops. Implement water management.',
+                    severe: 'Critical drought conditions. Emergency measures needed.'
+                }
+            };
+            
+            const risk = index > 0.7 ? 'severe' : index > 0.5 ? 'moderate' : index > 0.3 ? 'mild' : 'low';
+            return (notes[location?.toLowerCase()] || notes.default)[risk];
+        }
+
+        function getHeatNote(stress, location) {
+            const notes = {
+                'meru': {
+                    low: 'Favorable conditions for most crops.',
+                    mild: 'Monitor tea plantations for heat stress.',
+                    moderate: 'Use shade nets for sensitive crops. Consider mulching.',
+                    severe: 'High risk to tea and coffee. Implement cooling measures.'
+                },
+                'default': {
+                    low: 'Normal temperature conditions.',
+                    mild: 'Minor heat stress possible. Monitor crops.',
+                    moderate: 'Heat may affect crop growth. Use protective measures.',
+                    severe: 'Severe heat stress likely. Emergency measures needed.'
+                }
+            };
+            
+            const risk = stress > 1.5 ? 'severe' : stress > 1.0 ? 'moderate' : stress > 0.5 ? 'mild' : 'low';
+            return (notes[location?.toLowerCase()] || notes.default)[risk];
+        }
+
+        function getFloodNote(index, location) {
+            const notes = {
+                'meru': {
+                    low: 'Normal drainage conditions.',
+                    mild: 'Check drainage systems in low-lying areas.',
+                    moderate: 'Risk to root crops. Ensure field drainage.',
+                    severe: 'High risk of waterlogging. Implement flood protection.'
+                },
+                'default': {
+                    low: 'Normal soil saturation levels.',
+                    mild: 'Monitor low-lying areas.',
+                    moderate: 'Prepare drainage systems.',
+                    severe: 'High flood risk. Emergency measures needed.'
+                }
+            };
+            
+            const risk = index > 0.7 ? 'severe' : index > 0.5 ? 'moderate' : index > 0.3 ? 'mild' : 'low';
+            return (notes[location?.toLowerCase()] || notes.default)[risk];
+        }
+
+        function displayRecommendations(recommendations) {
+            try {
+                const container = document.getElementById('recommendationsList');
+                if (!container) {
+                    console.error('Recommendations container not found');
+                    return;
+                }
+
+                let currentSeason = 'longRains'; // Default to long rains view
+
+                function showSeason(season) {
+                    if (!recommendations || !recommendations[season]) {
+                        console.error('Invalid season or recommendations data');
+                        return;
+                    }
+
+                    currentSeason = season;
+                    renderRecommendations();
+                    
+                    // Update tab styling
+                    document.querySelectorAll('.season-tab').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    document.querySelector(`.season-tab[onclick*="${season}"]`).classList.add('active');
+                }
+
+                function formatRiskPeak(peak) {
+                    if (!peak) return '';
+                    return `
+                        <div class="risk-peak-info">
+                            <span class="material-icons" style="color: #dc3545;">warning</span>
+                            Peak Risk: ${peak.risk.toFixed(1)}% expected in ${peak.month} ${peak.year}
+                        </div>
+                    `;
+                }
+
+                function renderRecommendations() {
+                    const seasonRecs = recommendations[currentSeason] || [];
+                    container.innerHTML = seasonRecs.map(rec => `
+                        <div class="recommendation-card${rec.alert ? ' alert' : ''}">
+                            <div class="recommendation-header">
+                                <div class="recommendation-category">${rec.title || 'Recommendation'}</div>
+                                <h4>
+                                    ${rec.title || 'Recommendation'}
+                                    ${rec.alert ? '<span class="material-icons">warning</span>' : ''}
+                                </h4>
+                                <div class="timing">
+                                    <span class="material-icons">event</span>
+                                    ${rec.timing || 'Ongoing'}
+                                </div>
+                                ${rec.peak_risk ? formatRiskPeak(rec.peak_risk) : ''}
+                                ${rec.additional_warning ? `
+                                    <div class="additional-warning">
+                                        <span class="material-icons">warning</span>
+                                        ${rec.additional_warning}
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div class="recommendation-details">
+                                <ul>
+                                    ${(rec.actions || []).map(action => `
+                                        <li>
+                                            <span class="material-icons" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">check_circle</span>
+                                            ${action}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                            ${rec.rainfall_pattern ? `
+                                <div class="rainfall-pattern">
+                                    <span class="material-icons">water_drop</span>
+                                    ${rec.rainfall_pattern}
+                                </div>
+                            ` : ''}
+                            ${rec.climateIndicator ? `
+                                <div class="climate-indicator">
+                                    <span class="material-icons">info</span>
+                                    ${rec.climateIndicator}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `).join('') || '<div class="recommendation-card"><h4>No recommendations available</h4></div>';
+                }
+
+                // Add styles for new elements
+                const style = document.createElement('style');
+                style.textContent = `
+                    .risk-peak-info {
+                        background: #fff5f5;
+                        padding: 8px 12px;
+                        border-radius: 4px;
+                        margin: 8px 0;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        font-weight: 500;
+                        color: #dc3545;
+                    }
+
+                    .additional-warning {
+                        background: #dc3545;
+                        color: white;
+                        padding: 8px 12px;
+                        border-radius: 4px;
+                        margin: 8px 0;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        font-weight: 500;
+                    }
+
+                    .recommendation-header {
+                        margin-bottom: 15px;
+                    }
+
+                    .rainfall-pattern {
+                        margin-top: 12px;
+                        padding-top: 12px;
+                        border-top: 1px solid #eee;
+                        color: #2196F3;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        font-size: 0.9rem;
+                    }
+
+                    .timing {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        margin: 8px 0;
+                    }
+
+                    .timing .material-icons {
+                        font-size: 16px;
+                        color: #666;
+                    }
+                `;
+                document.head.appendChild(style);
+
+                // Initial render
+                renderRecommendations();
+
+                // Make showSeason available globally
+                window.showSeason = showSeason;
+            } catch (error) {
+                console.error('Error displaying recommendations:', error);
+                const container = document.getElementById('recommendationsList');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="recommendation-card">
+                            <h4>Error Loading Recommendations</h4>
+                            <p>Please try refreshing the page or contact support if the problem persists.</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Add function to find peak risk month
+        function findPeakRiskMonth(timeSeriesData, riskType) {
+            if (!timeSeriesData?.dates || !timeSeriesData[riskType] || 
+                timeSeriesData.dates.length === 0 || timeSeriesData[riskType].length === 0) {
+                return null;
+            }
+
+            let maxRisk = Math.max(...timeSeriesData[riskType]);
+            let maxIndex = timeSeriesData[riskType].indexOf(maxRisk);
+            let peakDate = new Date(timeSeriesData.dates[maxIndex]);
+            
+            return {
+                month: peakDate.toLocaleString('default', { month: 'long' }),
+                risk: maxRisk * 100,
+                date: peakDate
+            };
+        }
+    </script>
+</body>
+</html> 
