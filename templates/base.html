@@ -56,7 +56,6 @@
             list-style: none;
             justify-content: center;
             align-items: center;
-            transition: transform 0.3s ease-in-out;
         }
 
         .nav-links a {
@@ -64,10 +63,9 @@
             text-decoration: none;
             font-size: 1.1rem;
             font-weight: 500;
-            transition: all 0.3s;
             padding: 0.5rem 1rem;
             border-radius: 4px;
-            display: block;
+            transition: all 0.3s;
         }
 
         .nav-links a:hover, .nav-links a.active {
@@ -82,19 +80,12 @@
             font-size: 1.5rem;
             cursor: pointer;
             padding: 0.5rem;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-
-        .menu-toggle:hover {
-            background-color: rgba(255,255,255,0.1);
+            z-index: 1001;
         }
 
         main {
             flex: 1;
-            margin-top: 60px; /* Height of the fixed navbar */
+            margin-top: 60px;
         }
 
         footer {
@@ -105,61 +96,73 @@
         }
 
         @media (max-width: 768px) {
+            nav {
+                padding: 0;
+            }
+
+            .nav-container {
+                justify-content: flex-start;
+                padding: 0.5rem;
+            }
+
             .menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 1001;
+                display: block;
             }
 
             .nav-links {
                 position: fixed;
                 top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
+                left: -100%;
+                width: 80%;
+                height: 100vh;
                 background-color: var(--primary-color);
                 flex-direction: column;
-                justify-content: center;
-                gap: 1.5rem;
-                padding: 2rem;
-                transform: translateX(-100%);
-                transition: transform 0.3s ease-in-out;
+                justify-content: flex-start;
+                padding-top: 4rem;
+                transition: left 0.3s ease;
+                gap: 0;
             }
 
             .nav-links.active {
-                transform: translateX(0);
+                left: 0;
             }
 
             .nav-links li {
                 width: 100%;
-                text-align: center;
             }
 
             .nav-links a {
-                font-size: 1.2rem;
-                padding: 1rem;
-                border-radius: 8px;
+                display: block;
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+                border-radius: 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
             }
 
             .nav-links a:hover, .nav-links a.active {
-                background-color: rgba(255,255,255,0.2);
+                background-color: var(--secondary-color);
             }
 
-            /* Add overlay when menu is open */
             .nav-overlay {
                 position: fixed;
                 top: 0;
                 left: 0;
-                right: 0;
-                bottom: 0;
+                width: 100%;
+                height: 100%;
                 background-color: rgba(0,0,0,0.5);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
                 z-index: 999;
-                display: none;
             }
 
             .nav-overlay.active {
-                display: block;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            body.nav-open {
+                overflow: hidden;
             }
         }
     </style>
@@ -194,25 +197,42 @@
         const menuToggle = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
         const navOverlay = document.querySelector('.nav-overlay');
+        const body = document.body;
 
-        menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-            navOverlay.classList.toggle('active');
-            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
-        });
-
-        navOverlay.addEventListener('click', function() {
+        function closeNav() {
             navLinks.classList.remove('active');
             navOverlay.classList.remove('active');
-            document.body.style.overflow = '';
+            body.classList.remove('nav-open');
+        }
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+            navOverlay.classList.toggle('active');
+            body.classList.toggle('nav-open');
         });
 
+        navOverlay.addEventListener('click', closeNav);
+
         document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                navOverlay.classList.remove('active');
-                document.body.style.overflow = '';
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                closeNav();
+                // Small delay to allow animation to complete
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 300);
             });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navLinks.classList.contains('active') && 
+                !navLinks.contains(e.target) && 
+                !menuToggle.contains(e.target)) {
+                closeNav();
+            }
         });
     </script>
     {% block extra_js %}{% endblock %}

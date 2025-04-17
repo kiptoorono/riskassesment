@@ -29,14 +29,38 @@
             position: relative;
             background: white;
             padding: 0.5rem;
+            height: 100%;
+            min-height: 500px; /* Ensure minimum height on all devices */
         }
 
         .map-frame {
             width: 100%;
-            height: calc(100vh - 180px);
+            height: 100%;
+            min-height: 500px;
             border: none;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        /* Fix for mobile browsers */
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        main {
+            height: calc(100vh - 180px);
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
         }
 
         @media (max-width: 768px) {
@@ -55,11 +79,26 @@
 
             .map-container {
                 padding: 0.25rem;
+                height: calc(100vh - 160px);
+                min-height: 400px; /* Slightly smaller minimum height on mobile */
             }
 
             .map-frame {
-                height: calc(100vh - 160px);
+                min-height: 400px;
+                height: 100%;
                 border-radius: 4px;
+            }
+
+            main {
+                height: calc(100vh - 160px);
+                min-height: 400px;
+            }
+        }
+
+        /* Fix for iOS Safari */
+        @supports (-webkit-touch-callout: none) {
+            .map-container, .map-frame, main {
+                height: -webkit-fill-available;
             }
         }
     </style>
@@ -72,6 +111,6 @@
     </header>
 
     <main class="map-container">
-        <iframe class="map-frame" src="/static/climate_zones_map.html" title="Kenya Climate Zones Map"></iframe>
+        <iframe class="map-frame" src="/static/climate_zones_map.html" title="Kenya Climate Zones Map" allow="geolocation" loading="lazy"></iframe>
     </main>
 {% endblock %} 
