@@ -31,12 +31,30 @@
 
         nav {
             background-color: var(--primary-color);
-            padding: 1.2rem 2rem;
+            padding: 0.8rem 1rem;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
         }
 
         .nav-links {
@@ -57,9 +75,94 @@
             border-radius: 4px;
         }
 
-        .nav-links a:hover {
+        .nav-links a:hover, .nav-links a.active {
             background-color: rgba(255,255,255,0.1);
-            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 0;
+                background-color: var(--primary-color);
+                padding: 1rem 0;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem 2rem;
+                border-radius: 0;
+            }
+
+            .hero {
+                padding-top: 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .features {
+                padding: 2rem 1rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-button {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
         }
 
         .hero {
@@ -295,21 +398,26 @@
 </head>
 <body>
     <nav>
-        <ul class="nav-links">
-            <li><a href="/" class="active">Home</a></li>
-            <li><a href="/forecast">Forecast</a></li>
-            <li><a href="/climate_zones">Climate Zones</a></li>
-            <li><a href="/risk_assessment">Risk Assessment</a></li>
-            <li><a href="/about">About</a></li>
-        </ul>
+        <div class="nav-container">
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                <span class="material-icons">menu</span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/forecast">Forecast</a></li>
+                <li><a href="/climate_zones">Climate Zones</a></li>
+                <li><a href="/risk_assessment">Risk Assessment</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </div>
     </nav>
 
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h1>Smart Climate Solutions for Kenyan Farmers</h1>
+                <h1>Smart Climate Solutions<br>for Kenyan Farmers</h1>
                 <p>Empowering farmers with AI-driven climate insights, risk assessment, and personalized recommendations for sustainable agriculture.</p>
-                <a href="#" class="cta-button">Get Started</a>
+                <a href="/forecast" class="cta-button">Get Started</a>
             </div>
         </section>
 
@@ -431,5 +539,30 @@
             <p>&copy; 2024 Climate-Based Risk Support. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        // Add this JavaScript at the end of your body tag
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.querySelector('.nav-links');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>

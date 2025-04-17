@@ -27,16 +27,37 @@
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         nav {
             background-color: var(--primary-color);
-            padding: 1.2rem 2rem;
+            padding: 0.8rem 1rem;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
         }
 
         .nav-links {
@@ -57,96 +78,123 @@
             border-radius: 4px;
         }
 
-        .nav-links a:hover {
-            background-color: rgba(255,255,255,0.1);
-            transform: translateY(-1px);
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255,255,255,0.15);
         }
 
         .page-header {
-            padding: 8rem 2rem 2rem;
+            padding: 4.5rem 2rem 2rem;
             background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(27, 67, 50, 0.85));
             color: white;
             text-align: center;
         }
 
         .page-header h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
             font-weight: 700;
         }
 
         .page-header p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             max-width: 800px;
             margin: 0 auto;
             opacity: 0.9;
         }
 
         .map-container {
+            flex: 1;
             position: relative;
-            height: calc(100vh - 200px);
-            width: 100%;
             background: white;
-            padding: 1rem;
+            padding: 0.5rem;
         }
 
         .map-frame {
             width: 100%;
-            height: 100%;
+            height: calc(100vh - 180px);
             border: none;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .map-controls {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            background: white;
-            padding: 0.5rem;
-            border-radius: 4px;
-            box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
-            z-index: 1000;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .control-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #1B4332;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .control-button:hover {
-            background: #2D6A4F;
-        }
-
         footer {
             background-color: var(--primary-color);
             color: white;
-            padding: 2rem;
+            padding: 1rem;
             text-align: center;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 0;
+                background-color: var(--primary-color);
+                padding: 1rem 0;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem 2rem;
+                border-radius: 0;
+            }
+
+            .page-header {
+                padding: 4rem 1rem 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+
+            .map-container {
+                padding: 0.25rem;
+            }
+
+            .map-frame {
+                height: calc(100vh - 160px);
+                border-radius: 4px;
+            }
         }
     </style>
 </head>
 <body>
     <nav>
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/forecast">Forecast</a></li>
-            <li><a href="/climate_zones" class="active">Climate Zones</a></li>
-            <li><a href="/risk_assessment">Risk Assessment</a></li>
-            <li><a href="/about">About</a></li>
-        </ul>
+        <div class="nav-container">
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                <span class="material-icons">menu</span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/forecast">Forecast</a></li>
+                <li><a href="/climate_zones" class="active">Climate Zones</a></li>
+                <li><a href="/risk_assessment">Risk Assessment</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </div>
     </nav>
 
     <header class="page-header">
@@ -155,11 +203,36 @@
     </header>
 
     <main class="map-container">
-        <iframe class="map-frame" src="/climate_zones_map.html" title="Kenya Climate Zones Map"></iframe>
+        <iframe class="map-frame" src="/static/climate_zones_map.html" title="Kenya Climate Zones Map"></iframe>
     </main>
 
     <footer>
         <p>&copy; 2024 Climate-Based Risk Support. All rights reserved.</p>
     </footer>
+
+    <script>
+        // Add this JavaScript at the end of your body tag
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.querySelector('.nav-links');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html> 
