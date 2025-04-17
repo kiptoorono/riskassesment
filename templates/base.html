@@ -38,7 +38,7 @@
             background-color: var(--primary-color);
             padding: 0.8rem 1rem;
             position: fixed;
-            width: 100%;
+            width: 100%;    
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
@@ -90,33 +90,52 @@
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
+                z-index: 1001;
             }
 
             .nav-links {
                 display: none;
-                position: absolute;
-                top: 100%;
+                position: fixed;
+                top: var(--nav-height);
                 left: 0;
                 right: 0;
                 flex-direction: column;
                 gap: 0;
                 background-color: var(--primary-color);
-                padding: 1rem 0;
+                padding: 0;
                 box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                height: auto;
+                transition: transform 0.3s ease-in-out;
+                transform: translateY(-100%);
             }
 
             .nav-links.active {
                 display: flex;
+                transform: translateY(0);
             }
 
             .nav-links li {
                 width: 100%;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .nav-links li:last-child {
+                border-bottom: none;
             }
 
             .nav-links a {
                 display: block;
                 padding: 1rem 2rem;
                 border-radius: 0;
+                font-size: 1.1rem;
+            }
+
+            .nav-links a:active {
+                background-color: var(--secondary-color);
+            }
+
+            body.nav-open {
+                overflow: hidden;
             }
         }
 
@@ -237,27 +256,65 @@
 
     <script>
         // Mobile navigation functionality
-        document.querySelector('.menu-toggle').addEventListener('click', function(event) {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const body = document.body;
+
+        function closeNav() {
+            navLinks.classList.remove('active');
+            body.classList.remove('nav-open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        menuToggle.addEventListener('click', function(event) {
             event.stopPropagation();
-            document.querySelector('.nav-links').classList.toggle('active');
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            menuToggle.setAttribute('aria-expanded', !isExpanded);
+            navLinks.classList.toggle('active');
+            body.classList.toggle('nav-open');
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', function(event) {
             const nav = document.querySelector('nav');
-            const navLinks = document.querySelector('.nav-links');
-            
             if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
+                closeNav();
             }
         });
 
         // Close menu when clicking a link
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
-                document.querySelector('.nav-links').classList.remove('active');
+                closeNav();
             });
         });
+
+        // Close menu when scrolling
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && navLinks.classList.contains('active')) {
+                closeNav();
+            }
+            lastScrollTop = scrollTop;
+        }, { passive: true });
+
+        // Handle touch events for better mobile experience
+        let touchStartY = 0;
+        document.addEventListener('touchstart', function(e) {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', function(e) {
+            if (!navLinks.classList.contains('active')) return;
+            
+            const touchY = e.touches[0].clientY;
+            const diff = touchStartY - touchY;
+            
+            if (diff > 40) { // Swipe up
+                closeNav();
+            }
+        }, { passive: true });
     </script>
     {% block extra_js %}{% endblock %}
 </body>
