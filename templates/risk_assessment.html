@@ -71,6 +71,7 @@
             color: white;
             text-align: center;
             margin-bottom: 2rem;
+            margin-top: 60px;
         }
 
         .header h1 {
@@ -95,13 +96,12 @@
 
         .location-selector {
             margin: 20px 0;
-            padding: 15px;
+            padding: 25px;
             background: #f5f5f5;
             border-radius: 8px;
             display: flex;
-            gap: 15px;
+            gap: 25px;
             align-items: center;
-            flex-wrap: wrap;
         }
 
         .location-selector > div {
@@ -109,11 +109,18 @@
             min-width: 200px;
         }
 
+        .location-selector label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
         .location-selector select {
+            width: 100%;
             padding: 12px;
             border-radius: 4px;
             border: 1px solid #ddd;
-            width: 100%;
             font-size: 1rem;
             background-color: white;
             cursor: pointer;
@@ -121,6 +128,9 @@
 
         .location-selector button {
             padding: 12px 24px;
+            min-width: 200px;
+            height: 100%;
+            margin-top: 26px;
             background: var(--primary-color);
             color: white;
             border: none;
@@ -128,7 +138,6 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s;
-            width: 100%;
             font-size: 1rem;
         }
 
@@ -277,21 +286,23 @@
             }
 
             .container {
-                padding: 1rem;
+                padding: 15px;
             }
 
             .location-selector {
                 flex-direction: column;
-                gap: 10px;
+                padding: 15px;
+                gap: 15px;
             }
 
             .location-selector > div {
                 width: 100%;
             }
 
-            .location-selector select,
             .location-selector button {
                 width: 100%;
+                min-width: unset;
+                margin-top: 10px;
             }
 
             .risk-cards {
@@ -616,7 +627,6 @@
     </header>
 
     <div class="container">
-        <h1>Climate Risk Assessment</h1>
         <div class="location-selector">
             <div>
                 <label for="location">Select Location:</label>
@@ -823,10 +833,6 @@
             </div>
         </div>
     </div>
-
-    <footer>
-        <p>&copy; 2024 Climate-Based Risk Support. All rights reserved.</p>
-    </footer>
 
     <script>
         let riskChart = null;
