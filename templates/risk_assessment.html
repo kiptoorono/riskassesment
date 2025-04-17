@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risk Assessment - Climate-Based Risk Support</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% extends "base.html" %}
+
+{% block title %}Risk Assessment - Climate-Based Risk Support{% endblock %}
+
+{% block extra_css %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -22,12 +19,14 @@
             --background-color: #f8f9fa;
             --light-bg: #fff;
             --accent-color: #40916C;
+            --nav-height: 60px;
         }
 
         body {
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
+            padding-top: var(--nav-height);
         }
 
         nav {
@@ -64,14 +63,14 @@
         }
 
         .header {
-            padding: 8rem 2rem 4rem;
+            padding: 6rem 2rem 4rem;
             background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(27, 67, 50, 0.85)), url('/images/hero-bg.jpg');
             background-size: cover;
             background-position: center;
             color: white;
             text-align: center;
             margin-bottom: 2rem;
-            margin-top: 60px;
+            margin-top: calc(-1 * var(--nav-height));
         }
 
         .header h1 {
@@ -609,18 +608,9 @@
             }
         }
     </style>
-</head>
-<body>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/forecast">Forecast</a></li>
-            <li><a href="/climate_zones">Climate Zones</a></li>
-            <li><a href="/risk_assessment" class="active">Risk Assessment</a></li>
-            <li><a href="/about">About</a></li>
-        </ul>
-    </nav>
+{% endblock %}
 
+{% block content %}
     <header class="header">
         <h1>Climate Risk Assessment</h1>
         <p>Get detailed risk analysis and recommendations for your region based on AI-driven insights and historical data.</p>
@@ -833,7 +823,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
 
+{% block extra_js %}
     <script>
         let riskChart = null;
         let trendChart = null;
@@ -1705,5 +1697,4 @@
             };
         }
     </script>
-</body>
-</html> 
+{% endblock %} 

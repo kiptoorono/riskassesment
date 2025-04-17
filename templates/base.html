@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Climate-Based Risk Support{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>{% block title %}Climate-Based Risk Support for Kenyan Farmers{% endblock %}</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,9 +18,10 @@
             --primary-color: #1B4332;
             --secondary-color: #2D6A4F;
             --text-color: #333;
-            --background-color: #f8f9fa;
-            --light-bg: #fff;
+            --background-color: #fff;
+            --light-bg: #f8f9fa;
             --accent-color: #40916C;
+            --nav-height: 60px;
         }
 
         body {
@@ -30,6 +31,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-top: var(--nav-height);
         }
 
         nav {
@@ -40,14 +42,27 @@
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
         }
 
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
         }
 
         .nav-links {
@@ -63,68 +78,35 @@
             text-decoration: none;
             font-size: 1.1rem;
             font-weight: 500;
+            transition: all 0.3s;
             padding: 0.5rem 1rem;
             border-radius: 4px;
-            transition: all 0.3s;
         }
 
         .nav-links a:hover, .nav-links a.active {
-            background-color: rgba(255,255,255,0.15);
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            z-index: 1001;
-        }
-
-        main {
-            flex: 1;
-            margin-top: 60px;
-        }
-
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1rem;
-            text-align: center;
+            background-color: rgba(255,255,255,0.1);
         }
 
         @media (max-width: 768px) {
-            nav {
-                padding: 0;
-            }
-
-            .nav-container {
-                justify-content: flex-start;
-                padding: 0.5rem;
-            }
-
             .menu-toggle {
                 display: block;
             }
 
             .nav-links {
-                position: fixed;
-                top: 0;
-                left: -100%;
-                width: 80%;
-                height: 100vh;
-                background-color: var(--primary-color);
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
                 flex-direction: column;
-                justify-content: flex-start;
-                padding-top: 4rem;
-                transition: left 0.3s ease;
                 gap: 0;
+                background-color: var(--primary-color);
+                padding: 1rem 0;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             }
 
             .nav-links.active {
-                left: 0;
+                display: flex;
             }
 
             .nav-links li {
@@ -133,37 +115,60 @@
 
             .nav-links a {
                 display: block;
-                padding: 1rem 1.5rem;
-                font-size: 1rem;
+                padding: 1rem 2rem;
                 border-radius: 0;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
             }
+        }
 
-            .nav-links a:hover, .nav-links a.active {
-                background-color: var(--secondary-color);
-            }
+        main {
+            flex: 1;
+            margin-top: 0;
+        }
 
-            .nav-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0,0,0,0.5);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                z-index: 999;
-            }
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4rem 2rem 2rem;
+            margin-top: auto;
+        }
 
-            .nav-overlay.active {
-                opacity: 1;
-                visibility: visible;
-            }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
 
-            body.nav-open {
-                overflow: hidden;
-            }
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-section a:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -174,7 +179,6 @@
             <button class="menu-toggle" aria-label="Toggle navigation">
                 <span class="material-icons">menu</span>
             </button>
-            <div class="nav-overlay"></div>
             <ul class="nav-links">
                 <li><a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a></li>
                 <li><a href="/forecast" {% if request.path == '/forecast' %}class="active"{% endif %}>Forecast</a></li>
@@ -190,49 +194,69 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 Climate-Based Risk Support. All rights reserved.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/forecast">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="/climate_zones">Climate Data</a></li>
+                    <li><a href="/risk_assessment">Farming Guide</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li>Email: info@climatesupport.ke</li>
+                    <li>Phone: +254 700 000000</li>
+                    <li>Location: Nairobi, Kenya</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Partners</h4>
+                <ul>
+                    <li><a href="#">Kenya Meteorological Department</a></li>
+                    <li><a href="#">Ministry of Agriculture</a></li>
+                    <li><a href="#">Local Farming Communities</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024 Climate-Based Risk Support. All rights reserved.</p>
+        </div>
     </footer>
 
     <script>
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        const navOverlay = document.querySelector('.nav-overlay');
-        const body = document.body;
-
-        function closeNav() {
-            navLinks.classList.remove('active');
-            navOverlay.classList.remove('active');
-            body.classList.remove('nav-open');
-        }
-
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            navLinks.classList.toggle('active');
-            navOverlay.classList.toggle('active');
-            body.classList.toggle('nav-open');
-        });
-
-        navOverlay.addEventListener('click', closeNav);
-
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const href = link.getAttribute('href');
-                closeNav();
-                // Small delay to allow animation to complete
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 300);
-            });
+        // Mobile navigation functionality
+        document.querySelector('.menu-toggle').addEventListener('click', function(event) {
+            event.stopPropagation();
+            document.querySelector('.nav-links').classList.toggle('active');
         });
 
         // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (navLinks.classList.contains('active') && 
-                !navLinks.contains(e.target) && 
-                !menuToggle.contains(e.target)) {
-                closeNav();
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
             }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
         });
     </script>
     {% block extra_js %}{% endblock %}

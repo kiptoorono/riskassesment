@@ -112,7 +112,13 @@
             }
 
             .hero {
+                min-height: 100vh;
+                margin-top: 50px;
                 padding-top: 4rem;
+            }
+
+            .hero-content {
+                padding: 1rem;
             }
 
             .hero h1 {
@@ -121,6 +127,7 @@
 
             .hero p {
                 font-size: 1.1rem;
+                padding: 0 1rem;
             }
 
             .features {
@@ -147,8 +154,19 @@
         }
 
         @media (max-width: 480px) {
+            .hero {
+                min-height: 100vh;
+                margin-top: 50px;
+                padding-top: 4rem;
+            }
+
+            .hero-content {
+                padding: 1rem;
+            }
+
             .hero h1 {
                 font-size: 2rem;
+                padding: 0 0.5rem;
             }
 
             .stats-grid {
@@ -169,22 +187,24 @@
             background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(27, 67, 50, 0.85)), url('/images/hero-bg.jpg');
             background-size: cover;
             background-position: center;
-            min-height: 600px;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-align: center;
             padding: 2rem;
+            margin-top: 60px;
         }
 
         .hero-content {
             max-width: 800px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            padding: 2rem;
         }
 
         .hero h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 1.5rem;
             line-height: 1.2;
             font-weight: 700;
